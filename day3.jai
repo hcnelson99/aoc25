@@ -59,9 +59,48 @@ part1 :: (text: string) {
     print("total: %\n", total);
 }
 
+part2 :: (text: string) {
+    all_batteries := get_all_batteries(text);
+
+    total := 0;
+
+    for batteries: all_batteries {
+        joltage := 0;
+
+        search_from_index := 0;
+        remaining_digits := 12;
+
+        while remaining_digits > 0 {
+            best_digit := 0;
+            best_digit_index := -1;
+            for search_from_index..batteries.count-remaining_digits {
+                if batteries[it] > best_digit {
+                    best_digit = batteries[it];
+                    best_digit_index = it;
+                }
+            }
+
+            remaining_digits -= 1;
+            search_from_index = best_digit_index + 1;
+            
+            joltage *= 10;
+            joltage += best_digit;
+        }
+
+        total += joltage;
+
+    }
+
+    print("total: %\n", total);
+}
+
+
+
 main :: () {
     part1(example_input);
     part1(full_input);
+    part2(example_input);
+    part2(full_input);
 }
 
 #run main();
