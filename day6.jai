@@ -47,13 +47,62 @@ part1 :: (text: string) {
 }
 
 part2 :: (text: string) {
+    lines := get_nonempty_lines(text);
+    operands := lines[lines.count-1];
+    lines.count -= 1;
 
+    total := 0;
+
+    for operand: operands {
+        if operand == #char " " continue;
+
+        problem_answer := 0;
+
+        if operand == #char "*" problem_answer = 1;
+
+        column := it_index;
+
+        while column == it_index || (column < operands.count && operands[column] == #char " ") {
+            num := 0;
+
+            saw_digit := false;
+
+            for row: 0..lines.count-1 {
+                digit := lines[row][column];
+                if digit == #char " " continue;
+
+                saw_digit = true;
+
+                digit = digit - #char "0";
+                num *= 10;
+                num += digit;
+            }
+
+            if saw_digit { 
+                if operand == #char "+" {
+                    problem_answer += num;
+                } else if operand == #char "*" {
+                    problem_answer *= num;
+                } else {
+                    assert(false);
+                }
+            }
+
+            column += 1;
+        }
+
+        total += problem_answer;
+
+    }
+    print("total %\n", total);
 }
 
 
 main :: () {
-    part1(example_input);
-    part1(full_input);
+    part2(example_input);
+    part2(full_input);
+    // part1(example_input);
+    // part1(full_input);
 }
 
 #run main();
